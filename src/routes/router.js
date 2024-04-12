@@ -1,9 +1,9 @@
 const {Router} = require("express")
 
-const users = require("../controllers/users")
+const getUserAdmin = require("../controllers/getUserAdmin")
 
 const router = Router()
 
-router.get("/", users)
+router.get("/", getUserAdmin)
 
 module.exports = router

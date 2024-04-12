@@ -1,10 +1,24 @@
 const express = require("express")
-const app = express()
-const PORT = 3001
+const server = express()
 
-const router = require("./src/routes/router.js")
-app.use("/", router)
+const PORT = process.env.PORT || 3001
 
-app.listen(PORT, ()=>{
-    console.log(`server listen port ${PORT}`)
+const {db} = require("./src/db")
+
+const morgan = require("morgan")
+const cors = require("cors")
+server.use(cors())
+server.use(morgan("dev"))
+
+const routes = require("./src/routes/router.js")
+
+server.use(express.json())
+
+server.use("/", routes)
+
+db.sync({force:true})
+.then(()=>{
+    server.listen(PORT, ()=>{
+        console.log("server is on port " + PORT)
+    })
 })
